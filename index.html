@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FinZen — Controle Financeiro Pessoal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0f0e0b;
+  --ink2:#3a3930;
+  --muted:#888878;
+  --bg:#faf9f5;
+  --surface:#ffffff;
+  --border:#e8e6dc;
+  --green:#2d6a1f;
+  --green-light:#eaf3de;
+  --accent:#1a6b3c;
+  --accent2:#d4a843;
+  --red:#a32d2d;
+  --red-light:#fcebeb;
+}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(250,249,245,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center}
+.nav-logo{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:600;color:var(--ink);letter-spacing:-0.02em}
+.nav-logo span{color:var(--accent)}
+.nav-cta{background:var(--ink);color:#fff;padding:9px 22px;border-radius:6px;font-size:13px;font-weight:500;text-decoration:none;transition:background 0.2s}
+.nav-cta:hover{background:var(--accent)}
+
+/* HERO */
+.hero{max-width:860px;margin:0 auto;padding:6rem 2rem 5rem;text-align:center}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--green-light);color:var(--green);font-size:12px;font-weight:500;padding:5px 14px;border-radius:20px;margin-bottom:2rem;border:1px solid #c0dd97}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(2.6rem,6vw,4.2rem);font-weight:400;line-height:1.1;letter-spacing:-0.03em;color:var(--ink);margin-bottom:1.5rem}
+.hero h1 em{font-style:italic;color:var(--accent)}
+.hero p{font-size:1.1rem;color:var(--ink2);max-width:520px;margin:0 auto 2.5rem;line-height:1.8}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:3.5rem}
+.btn-main{background:var(--ink);color:#fff;padding:14px 32px;border-radius:8px;font-size:15px;font-weight:500;text-decoration:none;transition:all 0.2s;border:none;cursor:pointer}
+.btn-main:hover{background:var(--accent);transform:translateY(-1px)}
+.btn-ghost{background:transparent;color:var(--ink);padding:14px 28px;border-radius:8px;font-size:15px;font-weight:500;text-decoration:none;border:1.5px solid var(--border);transition:all 0.2s}
+.btn-ghost:hover{border-color:var(--ink)}
+.price-hint{font-size:13px;color:var(--muted)}
+.price-hint strong{color:var(--ink);font-weight:500}
+
+/* MOCKUP */
+.mockup-wrap{max-width:720px;margin:0 auto 5rem;padding:0 2rem}
+.mockup{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,0.08)}
+.mockup-bar{background:var(--ink);padding:10px 16px;display:flex;align-items:center;gap:8px}
+.mockup-dots{display:flex;gap:5px}
+.mockup-dot{width:10px;height:10px;border-radius:50%}
+.mockup-title{flex:1;text-align:center;font-size:12px;color:rgba(255,255,255,0.5)}
+.mockup-inner{padding:1.5rem}
+.mock-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.mock-metric{background:#f4f3ef;border-radius:8px;padding:10px 12px}
+.mock-metric-l{font-size:10px;color:#888;margin-bottom:4px}
+.mock-metric-v{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:600}
+.mock-metric-v.g{color:#3B6D11}
+.mock-metric-v.r{color:#A32D2D}
+.mock-metric-v.b{color:#185FA5}
+.mock-row{display:flex;gap:10px}
+.mock-list{flex:1}
+.mock-tx{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:#f4f3ef;border-radius:6px;margin-bottom:6px}
+.mock-tx-l{display:flex;align-items:center;gap:7px;font-size:11px}
+.mock-dot{width:7px;height:7px;border-radius:50%}
+.mock-val{font-size:11px;font-weight:500}
+.mock-val.g{color:#3B6D11}
+.mock-val.r{color:#A32D2D}
+.mock-side{width:140px;flex-shrink:0}
+.mock-bars{display:flex;flex-direction:column;gap:6px}
+.mock-bar-row{display:flex;align-items:center;gap:6px}
+.mock-bar-lbl{font-size:9px;color:#888;width:52px;text-align:right}
+.mock-bar-track{flex:1;height:6px;background:#eee;border-radius:3px;overflow:hidden}
+.mock-bar-fill{height:100%;border-radius:3px}
+
+/* FEATURES */
+.features{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:5rem 2rem}
+.features-inner{max-width:860px;margin:0 auto}
+.section-label{font-size:11px;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);margin-bottom:1rem}
+.section-title{font-family:'Fraunces',serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:400;line-height:1.2;letter-spacing:-0.02em;margin-bottom:3rem}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1.5rem}
+.feat{padding:1.5rem;border:1px solid var(--border);border-radius:12px;background:var(--bg)}
+.feat-icon{font-size:1.5rem;margin-bottom:1rem}
+.feat h3{font-family:'Fraunces',serif;font-size:1.05rem;font-weight:400;margin-bottom:0.5rem}
+.feat p{font-size:13px;color:var(--ink2);line-height:1.7}
+
+/* COMO FUNCIONA */
+.how{max-width:860px;margin:0 auto;padding:5rem 2rem}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2rem;margin-top:3rem}
+.step{text-align:center}
+.step-num{font-family:'Fraunces',serif;font-size:2.5rem;font-weight:300;color:var(--accent2);line-height:1;margin-bottom:1rem}
+.step h3{font-family:'Fraunces',serif;font-size:1rem;font-weight:400;margin-bottom:0.5rem}
+.step p{font-size:13px;color:var(--muted);line-height:1.7}
+.step-line{display:flex;align-items:center;justify-content:center;gap:2rem}
+
+/* PROVA */
+.proofs{background:var(--ink);padding:5rem 2rem}
+.proofs-inner{max-width:860px;margin:0 auto}
+.proofs .section-label{color:rgba(255,255,255,0.4)}
+.proofs .section-title{color:#fff}
+.testimonials{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.25rem;margin-top:2.5rem}
+.testimonial{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:1.5rem}
+.test-stars{color:var(--accent2);font-size:14px;margin-bottom:1rem}
+.test-text{font-size:14px;color:rgba(255,255,255,0.8);line-height:1.7;margin-bottom:1.25rem;font-style:italic}
+.test-author{font-size:13px;color:rgba(255,255,255,0.5)}
+.test-author strong{color:rgba(255,255,255,0.85);display:block;margin-bottom:2px}
+
+/* PRICING */
+.pricing{max-width:520px;margin:0 auto;padding:5rem 2rem;text-align:center}
+.price-card{background:var(--surface);border:2px solid var(--ink);border-radius:16px;padding:2.5rem;margin-top:2.5rem}
+.price-tag{font-family:'Fraunces',serif;font-size:3.5rem;font-weight:600;line-height:1;color:var(--ink)}
+.price-tag span{font-size:1.2rem;font-weight:400;color:var(--muted)}
+.price-period{font-size:13px;color:var(--muted);margin-top:4px;margin-bottom:2rem}
+.price-items{text-align:left;margin-bottom:2rem;display:flex;flex-direction:column;gap:10px}
+.price-item{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--ink2)}
+.pi-check{width:18px;height:18px;background:var(--green-light);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--green);flex-shrink:0}
+.btn-buy{display:block;width:100%;background:var(--ink);color:#fff;padding:15px;border-radius:8px;font-size:16px;font-weight:500;text-decoration:none;text-align:center;transition:all 0.2s;cursor:pointer;border:none}
+.btn-buy:hover{background:var(--accent);transform:translateY(-1px)}
+.guarantee{font-size:12px;color:var(--muted);margin-top:1rem}
+
+/* FAQ */
+.faq{max-width:640px;margin:0 auto;padding:5rem 2rem}
+.faq-items{margin-top:2.5rem;display:flex;flex-direction:column;gap:1px;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.faq-item{background:var(--surface);border-bottom:1px solid var(--border)}
+.faq-item:last-child{border-bottom:none}
+.faq-q{width:100%;background:none;border:none;padding:1.25rem 1.5rem;text-align:left;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:var(--ink);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.faq-q:hover{background:var(--bg)}
+.faq-icon{color:var(--muted);font-size:18px;flex-shrink:0;transition:transform 0.2s}
+.faq-a{display:none;padding:0 1.5rem 1.25rem;font-size:13px;color:var(--ink2);line-height:1.8}
+.faq-item.open .faq-a{display:block}
+.faq-item.open .faq-icon{transform:rotate(45deg)}
+
+/* FINAL CTA */
+.final-cta{background:var(--ink);padding:5rem 2rem;text-align:center}
+.final-cta h2{font-family:'Fraunces',serif;font-size:clamp(1.8rem,4vw,3rem);font-weight:400;color:#fff;letter-spacing:-0.02em;margin-bottom:1rem}
+.final-cta p{color:rgba(255,255,255,0.6);margin-bottom:2.5rem;font-size:1rem}
+.btn-final{background:#fff;color:var(--ink);padding:15px 40px;border-radius:8px;font-size:15px;font-weight:500;text-decoration:none;transition:all 0.2s;border:none;cursor:pointer;display:inline-block}
+.btn-final:hover{background:var(--accent2);color:var(--ink)}
+
+/* FOOTER */
+footer{background:var(--ink);border-top:1px solid rgba(255,255,255,0.08);padding:2rem;text-align:center;font-size:12px;color:rgba(255,255,255,0.3)}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.hero>*{animation:fadeUp 0.6s ease both}
+.hero-badge{animation-delay:0s}
+.hero h1{animation-delay:0.1s}
+.hero p{animation-delay:0.2s}
+.hero-btns{animation-delay:0.3s}
+.price-hint{animation-delay:0.4s}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Fin<span>Zen</span></div>
+  <a href="#comprar" class="nav-cta">Quero o FinZen — R$ 47</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-badge">✦ Controle financeiro simples e completo</div>
+  <h1>Pare de perder dinheiro<br/>sem <em>saber por quê.</em></h1>
+  <p>O FinZen é um sistema de controle financeiro pessoal que funciona direto no seu navegador. Sem mensalidade, sem cadastro, sem complicação.</p>
+  <div class="hero-btns">
+    <a href="#comprar" class="btn-main">Quero o FinZen agora</a>
+    <a href="#funcionalidades" class="btn-ghost">Ver o que tem</a>
+  </div>
+  <div class="price-hint">Pagamento único <strong>R$ 47</strong> · Acesso vitalício</div>
+</section>
+
+<div class="mockup-wrap">
+  <div class="mockup">
+    <div class="mockup-bar">
+      <div class="mockup-dots">
+        <div class="mockup-dot" style="background:#ff5f57"></div>
+        <div class="mockup-dot" style="background:#febc2e"></div>
+        <div class="mockup-dot" style="background:#28c840"></div>
+      </div>
+      <div class="mockup-title">FinZen — Controle Financeiro</div>
+    </div>
+    <div class="mockup-inner">
+      <div class="mock-metrics">
+        <div class="mock-metric"><div class="mock-metric-l">Entradas</div><div class="mock-metric-v g">R$ 4.400</div></div>
+        <div class="mock-metric"><div class="mock-metric-l">Saídas</div><div class="mock-metric-v r">R$ 2.014</div></div>
+        <div class="mock-metric"><div class="mock-metric-l">Saldo</div><div class="mock-metric-v b">R$ 2.386</div></div>
+      </div>
+      <div class="mock-row">
+        <div class="mock-list">
+          <div class="mock-tx"><div class="mock-tx-l"><div class="mock-dot" style="background:#3B6D11"></div>Salário</div><span class="mock-val g">+R$3.500</span></div>
+          <div class="mock-tx"><div class="mock-tx-l"><div class="mock-dot" style="background:#A32D2D"></div>Aluguel</div><span class="mock-val r">−R$1.200</span></div>
+          <div class="mock-tx"><div class="mock-tx-l"><div class="mock-dot" style="background:#3B6D11"></div>Freelance</div><span class="mock-val g">+R$ 900</span></div>
+          <div class="mock-tx"><div class="mock-tx-l"><div class="mock-dot" style="background:#A32D2D"></div>Mercado</div><span class="mock-val r">−R$ 480</span></div>
+          <div class="mock-tx"><div class="mock-tx-l"><div class="mock-dot" style="background:#A32D2D"></div>Transporte</div><span class="mock-val r">−R$ 95</span></div>
+        </div>
+        <div class="mock-side">
+          <div style="font-size:9px;color:#888;margin-bottom:8px">Gastos por categoria</div>
+          <div class="mock-bars">
+            <div class="mock-bar-row"><div class="mock-bar-lbl">Moradia</div><div class="mock-bar-track"><div class="mock-bar-fill" style="width:100%;background:#F09595"></div></div></div>
+            <div class="mock-bar-row"><div class="mock-bar-lbl">Aliment.</div><div class="mock-bar-track"><div class="mock-bar-fill" style="width:70%;background:#F09595"></div></div></div>
+            <div class="mock-bar-row"><div class="mock-bar-lbl">Transp.</div><div class="mock-bar-track"><div class="mock-bar-fill" style="width:35%;background:#F09595"></div></div></div>
+            <div class="mock-bar-row"><div class="mock-bar-lbl">Saúde</div><div class="mock-bar-track"><div class="mock-bar-fill" style="width:20%;background:#F09595"></div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="features" id="funcionalidades">
+  <div class="features-inner">
+    <div class="section-label">Funcionalidades</div>
+    <div class="section-title">Tudo que você precisa<br/>para organizar seu dinheiro</div>
+    <div class="features-grid">
+      <div class="feat"><div class="feat-icon">📊</div><h3>Dashboard completo</h3><p>Veja entradas, saídas, saldo do mês e saldo acumulado em tempo real, tudo num painel limpo.</p></div>
+      <div class="feat"><div class="feat-icon">📂</div><h3>Categorias de gastos</h3><p>Classifique cada transação e descubra onde seu dinheiro vai de verdade todo mês.</p></div>
+      <div class="feat"><div class="feat-icon">📅</div><h3>Histórico mensal</h3><p>Navegue entre meses e compare sua evolução financeira ao longo do tempo.</p></div>
+      <div class="feat"><div class="feat-icon">📈</div><h3>Gráfico de evolução</h3><p>Visualize entradas e saídas dos últimos 6 meses em um gráfico de barras claro e elegante.</p></div>
+      <div class="feat"><div class="feat-icon">📤</div><h3>Exporta para planilha</h3><p>Com um clique, exporte tudo para um arquivo .xlsx com 3 abas: transações, resumo mensal e categorias.</p></div>
+      <div class="feat"><div class="feat-icon">💾</div><h3>Funciona offline</h3><p>Nenhum servidor, nenhum cadastro. Seus dados ficam salvos no seu próprio dispositivo.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="how">
+  <div class="section-label">Como funciona</div>
+  <div class="section-title">Simples do começo ao fim</div>
+  <div class="steps">
+    <div class="step"><div class="step-num">01</div><h3>Compre uma vez</h3><p>Pague R$ 47 via PIX, cartão ou boleto. Sem assinatura, sem renovação.</p></div>
+    <div class="step"><div class="step-num">02</div><h3>Receba o arquivo</h3><p>Você baixa um arquivo HTML. Abre direto no navegador — Chrome, Firefox, Edge.</p></div>
+    <div class="step"><div class="step-num">03</div><h3>Use para sempre</h3><p>Lance suas transações, acompanhe o saldo e exporte para planilha quando quiser.</p></div>
+  </div>
+</section>
+
+<section class="proofs">
+  <div class="proofs-inner">
+    <div class="section-label">Depoimentos</div>
+    <div class="section-title">Quem já usa o FinZen</div>
+    <div class="testimonials">
+      <div class="testimonial">
+        <div class="test-stars">★★★★★</div>
+        <div class="test-text">"Finalmente entendi pra onde meu salário ia. Em 1 semana já tinha cortado gastos desnecessários."</div>
+        <div class="test-author"><strong>Camila S.</strong>Professora, São Paulo</div>
+      </div>
+      <div class="testimonial">
+        <div class="test-stars">★★★★★</div>
+        <div class="test-text">"Já tentei vários apps e sempre desistia. O FinZen é simples do jeito certo — abro, lanço e fecho."</div>
+        <div class="test-author"><strong>Rafael M.</strong>Autônomo, Curitiba</div>
+      </div>
+      <div class="testimonial">
+        <div class="test-stars">★★★★★</div>
+        <div class="test-text">"A exportação para Excel salvou minha vida na hora de fechar o mês com meu contador."</div>
+        <div class="test-author"><strong>Juliana P.</strong>MEI, Belo Horizonte</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pricing" id="comprar">
+  <div class="section-label">Preço</div>
+  <div class="section-title">Um preço justo,<br/>para sempre.</div>
+  <div class="price-card">
+    <div class="price-tag"><span>R$</span> 47</div>
+    <div class="price-period">pagamento único · acesso vitalício</div>
+    <div class="price-items">
+      <div class="price-item"><div class="pi-check">✓</div>Sistema FinZen completo</div>
+      <div class="price-item"><div class="pi-check">✓</div>Dashboard com 5 métricas</div>
+      <div class="price-item"><div class="pi-check">✓</div>Controle de entradas e saídas</div>
+      <div class="price-item"><div class="pi-check">✓</div>Categorias de gastos</div>
+      <div class="price-item"><div class="pi-check">✓</div>Gráficos mensais</div>
+      <div class="price-item"><div class="pi-check">✓</div>Exportação para planilha .xlsx</div>
+      <div class="price-item"><div class="pi-check">✓</div>Funciona offline, sem assinatura</div>
+      <div class="price-item"><div class="pi-check">✓</div>Atualizações gratuitas</div>
+    </div>
+    <a href="#" class="btn-buy">Comprar agora por R$ 47</a>
+    <div class="guarantee">🔒 Pagamento seguro · Entrega imediata após confirmação</div>
+  </div>
+</section>
+
+<section class="faq">
+  <div class="section-label">Dúvidas</div>
+  <div class="section-title">Perguntas frequentes</div>
+  <div class="faq-items">
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Como recebo o produto após a compra? <span class="faq-icon">+</span></button>
+      <div class="faq-a">Logo após a confirmação do pagamento, você recebe um e-mail com o link para baixar o arquivo do FinZen. É instantâneo.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Precisa de internet para usar? <span class="faq-icon">+</span></button>
+      <div class="faq-a">Não. Depois de baixar o arquivo, ele funciona 100% offline. Seus dados ficam salvos no seu próprio computador ou celular.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Funciona no celular? <span class="faq-icon">+</span></button>
+      <div class="faq-a">Sim! O FinZen funciona em qualquer navegador moderno — Chrome, Firefox, Safari, Edge — tanto no computador quanto no celular.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Meus dados são privados? <span class="faq-icon">+</span></button>
+      <div class="faq-a">Totalmente. Nenhuma informação é enviada para nenhum servidor. Tudo fica salvo apenas no seu dispositivo.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">E se eu trocar de computador, perco os dados? <span class="faq-icon">+</span></button>
+      <div class="faq-a">Para migrar, basta exportar sua planilha antes e guardar o arquivo. O FinZen não depende de nuvem, o controle é seu.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Tem garantia? <span class="faq-icon">+</span></button>
+      <div class="faq-a">Sim. Se por qualquer motivo você não ficar satisfeito nos primeiros 7 dias, devolvemos 100% do valor. Sem burocracia.</div>
+    </div>
+  </div>
+</section>
+
+<section class="final-cta">
+  <h2>Seu dinheiro merece<br/>mais atenção.</h2>
+  <p>Junte-se a quem já parou de perder dinheiro sem saber por quê.</p>
+  <a href="#comprar" class="btn-final">Quero o FinZen por R$ 47</a>
+</section>
+
+<footer>
+  © 2025 FinZen · Todos os direitos reservados
+</footer>
+
+<script>
+function toggleFaq(btn){
+  const item=btn.closest('.faq-item');
+  const isOpen=item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+  if(!isOpen) item.classList.add('open');
+}
+</script>
+</body>
+</html>
